@@ -4,516 +4,562 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marchello Cafe</title>
+  <link rel="icon" type="image/png" href="Affogato%20Classic.png">
+  <link rel="apple-touch-icon" href="Affogato%20Classic.png">
   <style>
-    :root {
-      --bg: #f6f1ea;
-      --ink: #2a211b;
-      --muted: #66564b;
-      --accent: #846b59;
-      --soft: #efe5db;
-      --card: rgba(255,255,255,0.72);
-      --border: #dacdbf;
-      --dark: #2f241d;
+    :root{
+      --bg:#f6f1ea;
+      --ink:#2a211b;
+      --muted:#66564b;
+      --accent:#846b59;
+      --soft:#efe5db;
+      --border:#dacdbf;
+      --dark:#2f241d;
+      --card:rgba(255,255,255,.72);
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Candara, Arial, sans-serif;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Candara,"Trebuchet MS",Arial,sans-serif;
     }
-    img { display: block; max-width: 100%; }
-    .container {
-      width: min(94vw, 1280px);
-      margin: 0 auto;
+    a{color:inherit}
+    .container{
+      width:min(94vw,1280px);
+      margin:0 auto;
     }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      border-bottom: 1px solid #d9cbbd;
-      background: rgba(246, 241, 234, 0.95);
-      backdrop-filter: blur(8px);
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(10px);
+      background:rgba(246,241,234,.95);
+      border-bottom:1px solid #d9cbbd;
     }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 0;
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:16px 0;
     }
-    .nav {
-      display: flex;
-      gap: 32px;
-      font-size: 14px;
+    .desktop-nav{
+      display:flex;
+      gap:32px;
+      font-size:14px;
+      text-transform:lowercase;
     }
-    .nav a {
-      color: var(--ink);
-      text-decoration: none;
-      text-transform: lowercase;
-      transition: opacity .2s ease;
+    .desktop-nav a,
+    .mobile-nav a{
+      text-decoration:none;
+      transition:.2s ease;
     }
-    .nav a:hover { opacity: .7; }
+    .desktop-nav a:hover,
+    .mobile-nav a:hover{opacity:.7}
+    .menu-toggle{
+      display:none;
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:1px solid #d9cbbd;
+      background:rgba(255,255,255,.7);
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .menu-toggle span{
+      display:block;
+      width:20px;
+      height:2px;
+      background:var(--ink);
+      margin:4px 0;
+      transition:.2s ease;
+    }
+    .menu-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .menu-toggle.open span:nth-child(2){opacity:0}
+    .menu-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile-menu{
+      display:none;
+      border-top:1px solid #e3d8cd;
+      background:var(--bg);
+    }
+    .mobile-nav{
+      display:flex;
+      flex-direction:column;
+      padding:12px 0 16px;
+      font-size:14px;
+      text-transform:lowercase;
+    }
+    .mobile-nav a{
+      padding:12px 14px;
+      border-radius:14px;
+    }
+    .mobile-nav a:hover{background:rgba(255,255,255,.6)}
 
-    .logo-wrap {
-      display: inline-block;
-      max-width: 100%;
-      font-family: Candara, Arial, sans-serif;
+    .logo{
+      display:inline-block;
+      max-width:100%;
+      font-family:Candara,"Trebuchet MS",Arial,sans-serif;
+      background:transparent !important;
+      line-height:1;
     }
-    .logo {
-      position: relative;
-      display: inline-block;
-      white-space: nowrap;
-      padding-right: .34em;
-      font-weight: 700;
-      text-transform: lowercase;
-      letter-spacing: .02em;
-      line-height: 1;
-      background: transparent;
+    .logo-word{
+      position:relative;
+      display:inline-block;
+      white-space:nowrap;
+      font-weight:700;
+      text-transform:lowercase;
+      letter-spacing:.02em;
+      padding-right:.34em;
+      background:transparent !important;
     }
-    .logo .mark {
-      position: absolute;
-      right: 0;
-      top: .08em;
+    .logo-mark{
+      position:absolute;
+      right:0;
+      background:transparent !important;
     }
-    .logo-default { font-size: clamp(1.9rem, 2vw, 2.35rem); }
-    .logo-small { font-size: clamp(1.5rem, 1.7vw, 1.9rem); }
-    .logo-hero { font-size: clamp(2.8rem, 5.2vw, 4.9rem); line-height: .9; }
-    .logo-inline { font-size: 1em; vertical-align: baseline; }
-    .logo-default .mark,
-    .logo-small .mark { font-size: .3em; }
-    .logo-hero .mark { font-size: .28em; }
-    .logo-inline .mark { top: .02em; font-size: .38em; }
+    .logo-default{font-size:clamp(1.9rem,2.2vw,2.4rem)}
+    .logo-small{font-size:clamp(1.5rem,1.8vw,2rem)}
+    .logo-hero{font-size:clamp(2.8rem,5.2vw,4.9rem)}
+    .logo-inline{font-size:1em; vertical-align:baseline}
+    .logo-default .logo-mark,
+    .logo-small .logo-mark{top:.08em;font-size:.30em}
+    .logo-hero .logo-mark{top:.08em;font-size:.28em}
+    .logo-inline .logo-mark{top:.02em;font-size:.38em}
 
-    .hero {
-      position: relative;
-      overflow: hidden;
+    .hero{
+      position:relative;
+      overflow:hidden;
     }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
         radial-gradient(circle at top right, rgba(84,56,38,0.12), transparent 35%),
         radial-gradient(circle at bottom left, rgba(84,56,38,0.08), transparent 30%);
-      pointer-events: none;
+      pointer-events:none;
     }
-    .hero-grid {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      padding: 80px 0 112px;
+    .hero-grid{
+      position:relative;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+      padding:80px 0 112px;
+      align-items:center;
     }
-    .hero-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    .eyebrow{
+      margin:0 0 16px;
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:.35em;
+      color:#7a6252;
     }
-    .eyebrow {
-      margin: 0 0 16px;
-      font-size: 14px;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      color: #7a6252;
+    .hero h1{
+      margin:0;
+      max-width:100%;
+      overflow:hidden;
+      line-height:.95;
+      background:transparent !important;
     }
-    .hero-title {
-      margin: 0;
-      max-width: 100%;
-      overflow: hidden;
-      line-height: 1;
-      background: transparent;
+    .lead{
+      margin:24px 0 0;
+      max-width:640px;
+      font-size:18px;
+      line-height:1.85;
+      color:#5b4a3f;
     }
-    .hero-copy p.lead {
-      max-width: 640px;
-      margin: 24px 0 0;
-      font-size: 18px;
-      line-height: 1.8;
-      color: #5b4a3f;
+    .button-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:32px;
     }
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 32px;
+    .btn{
+      display:inline-block;
+      padding:14px 24px;
+      border-radius:18px;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:700;
+      text-transform:lowercase;
+      transition:.2s ease;
     }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 18px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      text-transform: lowercase;
-      transition: all .2s ease;
+    .btn-dark{
+      background:var(--ink);
+      color:#fff;
+      box-shadow:0 8px 22px rgba(42,33,27,.08);
     }
-    .btn-dark {
-      background: var(--ink);
-      color: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    .btn-dark:hover{transform:translateY(-1px)}
+    .btn-outline{
+      border:1px solid var(--ink);
+      color:var(--ink);
     }
-    .btn-dark:hover { transform: translateY(-1px); }
-    .btn-outline {
-      border: 1px solid var(--ink);
-      color: var(--ink);
-      background: transparent;
-    }
-    .btn-outline:hover {
-      background: var(--ink);
-      color: #fff;
+    .btn-outline:hover{
+      background:var(--ink);
+      color:#fff;
     }
 
-    .hero-cards {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
+    .hero-cards{
+      display:grid;
+      gap:16px;
+      grid-template-columns:1fr 1fr;
     }
-    .hero-card-light,
-    .hero-card-dark {
-      border-radius: 2rem;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
+    .panel{
+      border-radius:32px;
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
     }
-    .hero-card-light {
-      background: #d8c2ac;
-      padding: 24px;
+    .panel-light{
+      background:#d8c2ac;
+      padding:24px;
     }
-    .hero-card-light .inner {
-      height: 100%;
-      border-radius: 1.5rem;
-      border: 1px solid rgba(255,255,255,.4);
-      background: #f4e7db;
-      padding: 24px;
+    .panel-light-inner{
+      height:100%;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.4);
+      background:#f4e7db;
+      padding:24px;
     }
-    .hero-card-dark {
-      margin-top: 40px;
-      background: #2f241d;
-      color: #fff;
-      padding: 24px;
+    .panel-dark{
+      background:var(--dark);
+      color:#fff;
+      padding:24px;
+      margin-top:40px;
     }
-    .kicker {
-      margin: 0;
-      font-size: 12px;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: #8a6f5b;
+    .tag{
+      margin:0;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.25em;
+      color:#8a6f5b;
     }
-    .hero-card-dark .kicker { color: #d9bfa7; }
-    .hero-card-light h3,
-    .hero-card-dark h3 {
-      margin: 16px 0 0;
-      font-size: 1.5rem;
+    .panel-dark .tag{color:#d9bfa7}
+    .panel h3{
+      margin:16px 0 0;
+      font-size:28px;
+      line-height:1.2;
     }
-    .hero-card-light p:last-child,
-    .hero-card-dark p:last-child {
-      margin: 16px 0 0;
-      font-size: 15px;
-      line-height: 1.8;
+    .panel p.copy{
+      margin:16px 0 0;
+      font-size:15px;
+      line-height:1.8;
+      color:#5f5044;
     }
-    .hero-card-light p:last-child { color: #5f5044; }
-    .hero-card-dark p:last-child { color: #efe5db; }
+    .panel-dark p.copy{color:#efe5db}
 
-    section { padding: 64px 0; }
-    .section-card {
-      display: grid;
-      gap: 32px;
-      border-radius: 2rem;
-      border: 1px solid #dbcbbc;
-      background: rgba(255,255,255,.6);
-      padding: 32px;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
+    section.page-section{padding:64px 0}
+    .section-wrap{
+      display:grid;
+      gap:32px;
+      border-radius:32px;
+      border:1px solid #dbcbbc;
+      background:rgba(255,255,255,.6);
+      padding:32px;
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
     }
-    .about-grid { grid-template-columns: 1.1fr .9fr; }
-    .section-kicker {
-      margin: 0;
-      font-size: 12px;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: var(--accent);
+    .about-wrap{grid-template-columns:1.1fr .9fr}
+    .section-tag{
+      margin:0;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.3em;
+      color:var(--accent);
     }
-    h2.section-title {
-      margin: 12px 0 0;
-      font-size: clamp(2rem, 3.2vw, 3rem);
-      font-weight: 700;
-      text-transform: lowercase;
-      line-height: 1.15;
+    h2{
+      margin:12px 0 0;
+      font-size:clamp(2rem,3vw,2.6rem);
+      line-height:1.15;
+      text-transform:lowercase;
     }
-    .body-text {
-      margin: 20px 0 0;
-      max-width: 740px;
-      color: #5c4d42;
-      line-height: 1.8;
-    }
-    .stats-grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: 1fr 1fr;
-    }
-    .stat-box {
-      border-radius: 1rem;
-      padding: 20px;
-    }
-    .stat-box strong {
-      display: block;
-      font-size: 2rem;
-      line-height: 1.1;
-    }
-    .stat-box span {
-      display: block;
-      margin-top: 8px;
-      font-size: 12px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: #7e6654;
+    .text{
+      margin:20px 0 0;
+      color:#5c4d42;
+      line-height:1.8;
+      font-size:16px;
     }
 
-    .menu-head {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: end;
-      justify-content: space-between;
+    .stats-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns:1fr 1fr;
     }
-    .menu-head .intro {
-      max-width: 640px;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #5c4d42;
+    .stat{
+      border-radius:18px;
+      padding:20px;
     }
-    .menu-feature {
-      margin-top: 32px;
-      overflow: hidden;
-      border-radius: 2rem;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.7);
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
-      display: grid;
-      grid-template-columns: .95fr 1.05fr;
+    .stat strong{
+      display:block;
+      font-size:32px;
+      margin-bottom:6px;
     }
-    .menu-feature-image {
-      min-height: 320px;
-    }
-    .menu-feature-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .menu-feature-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 32px 40px;
-    }
-    .menu-feature-copy h3 {
-      margin: 12px 0 0;
-      font-size: clamp(2rem, 3vw, 2.5rem);
-      line-height: 1.15;
-      text-transform: lowercase;
-    }
-    .menu-feature-copy p:last-child {
-      margin: 20px 0 0;
-      max-width: 620px;
-      line-height: 1.8;
-      color: #5c4d42;
-    }
-    .menu-grid {
-      margin-top: 32px;
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .menu-box {
-      border-radius: 1.75rem;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.7);
-      padding: 24px;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
-    }
-    .menu-box h3 {
-      margin: 0;
-      font-size: 1.25rem;
-    }
-    .menu-box p {
-      margin: 12px 0 0;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #5f5044;
+    .stat span{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:#7e6654;
     }
 
-    .branches-wrap {
-      background: var(--soft);
+    .menu-top{
+      display:flex;
+      gap:16px;
+      align-items:flex-end;
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
-    .branch-grid {
-      margin-top: 32px;
-      display: grid;
-      gap: 24px;
-      grid-template-columns: 1fr 1fr;
+    .menu-top .text{
+      max-width:520px;
+      margin-top:0;
+      font-size:15px;
     }
-    .branch-card {
-      border-radius: 2rem;
-      background: #fff;
-      padding: 32px;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
+    .menu-feature{
+      margin-top:32px;
+      overflow:hidden;
+      border-radius:32px;
+      border:1px solid var(--border);
+      background:var(--card);
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
     }
-    .branch-card h3 {
-      margin: 0;
-      font-size: 1.5rem;
+    .menu-image{
+      min-height:320px;
     }
-    .branch-meta {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #876d5a;
+    .menu-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
-    .branch-note {
-      margin: 20px 0 0;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #5f5044;
+    .menu-copy{
+      padding:32px 40px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
     }
-
-    .events-card {
-      display: grid;
-      gap: 32px;
-      grid-template-columns: 1.1fr .9fr;
-      border-radius: 2rem;
-      background: #2a211b;
-      color: #fff;
-      padding: 32px;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.08);
+    .menu-grid{
+      margin-top:32px;
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(3,1fr);
     }
-    .events-card .body-text { color: #efe4da; }
-    .events-side {
-      border-radius: 1.75rem;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.05);
-      padding: 24px;
+    .menu-card{
+      border-radius:28px;
+      border:1px solid var(--border);
+      background:var(--card);
+      padding:24px;
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
     }
-    .events-side .group + .group { margin-top: 20px; }
-    .events-side .label {
-      margin: 0;
-      font-size: 12px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: #d7b9a1;
+    .menu-card h3{
+      margin:0;
+      font-size:22px;
     }
-    .events-side .value {
-      margin: 8px 0 0;
-      font-size: 1.125rem;
-      line-height: 1.5;
+    .menu-card p{
+      margin:12px 0 0;
+      font-size:15px;
+      line-height:1.8;
+      color:#5f5044;
     }
 
-    .franchise-wrap {
-      background: #e8d7c7;
+    .branches-band{
+      background:var(--soft);
+      padding:64px 0;
     }
-    .franchise-card {
-      display: grid;
-      gap: 32px;
-      grid-template-columns: 1.05fr .95fr;
-      border-radius: 2rem;
-      background: rgba(255,255,255,.75);
-      padding: 32px;
-      box-shadow: 0 10px 28px rgba(42,33,27,0.05);
+    .branch-grid{
+      margin-top:32px;
+      display:grid;
+      gap:24px;
+      grid-template-columns:1fr 1fr;
     }
-    .mini-grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: 1fr 1fr;
+    .branch-card{
+      border-radius:32px;
+      background:#fff;
+      padding:32px;
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
     }
-    .mini-box {
-      border-radius: 1rem;
-      padding: 20px;
+    .branch-card h3{
+      margin:0;
+      font-size:28px;
     }
-    .mini-box strong {
-      display: block;
-      font-size: 1.125rem;
+    .branch-line{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      font-size:14px;
+      color:#876d5a;
     }
-    .mini-box p {
-      margin: 8px 0 0;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #5f5044;
+    .branch-note{
+      margin:20px 0 0;
+      font-size:15px;
+      line-height:1.8;
+      color:#5f5044;
     }
 
-    footer {
-      border-top: 1px solid #d9cbbd;
-      background: var(--bg);
+    .events-wrap,
+    .franchise-wrap{
+      display:grid;
+      gap:32px;
+      border-radius:32px;
+      padding:32px;
+      box-shadow:0 10px 28px rgba(42,33,27,.05);
     }
-    .footer-inner {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 32px 0;
+    .events-wrap{
+      background:var(--ink);
+      color:#fff;
+      grid-template-columns:1.1fr .9fr;
+    }
+    .events-wrap .text{color:#efe4da}
+    .events-side{
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.05);
+      padding:24px;
+    }
+    .events-side .item + .item{margin-top:20px}
+    .events-side .label{
+      margin:0;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:#d7b9a1;
+    }
+    .events-side .value{
+      margin:8px 0 0;
+      font-size:20px;
+      line-height:1.5;
+    }
+
+    .franchise-band{
+      background:#e8d7c7;
+      padding:64px 0;
+    }
+    .franchise-wrap{
+      background:rgba(255,255,255,.75);
+      grid-template-columns:1.05fr .95fr;
+    }
+    .mini-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns:1fr 1fr;
+    }
+    .mini-card{
+      border-radius:18px;
+      padding:20px;
+    }
+    .mini-card strong{
+      display:block;
+      font-size:20px;
+      margin-bottom:6px;
+    }
+    .mini-card p{
+      margin:0;
+      font-size:15px;
+      line-height:1.8;
+      color:#5f5044;
+    }
+
+    footer{
+      border-top:1px solid #d9cbbd;
+      background:var(--bg);
+    }
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      padding:32px 0;
     }
     .footer-copy,
-    .footer-right {
-      color: var(--muted);
-      font-size: 14px;
+    .footer-right{
+      color:var(--muted);
+      font-size:15px;
     }
+    .footer-copy{margin-top:8px}
 
-    @media (min-width: 768px) {
-      .footer-inner {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-    @media (max-width: 1024px) {
+    @media (max-width: 900px){
       .hero-grid,
-      .about-grid,
+      .about-wrap,
       .menu-feature,
-      .branch-grid,
-      .events-card,
-      .franchise-card {
-        grid-template-columns: 1fr;
+      .events-wrap,
+      .franchise-wrap,
+      .branch-grid{
+        grid-template-columns:1fr;
       }
-      .hero-cards { grid-template-columns: 1fr; }
-      .hero-card-dark { margin-top: 0; }
-      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-cards{grid-template-columns:1fr}
+      .panel-dark{margin-top:0}
+      .menu-grid{grid-template-columns:1fr 1fr}
+      .menu-copy{padding:28px}
+      .desktop-nav{display:none}
+      .menu-toggle{display:flex}
     }
-    @media (max-width: 767px) {
-      .container { width: min(95vw, 1280px); }
-      .nav { display: none; }
-      .hero-grid { padding: 56px 0 72px; }
-      .hero-title { display: none; }
-      .hero-copy p.lead { font-size: 16px; }
-      .menu-grid,
+    @media (max-width: 768px){
+      .container{width:min(95vw,1280px)}
+      .hero-grid{padding:52px 0 72px; gap:28px}
+      .hero-logo-mobile-hide{display:none}
+      .lead{font-size:16px}
       .stats-grid,
-      .mini-grid { grid-template-columns: 1fr; }
-      .header-inner,
-      .footer-inner { gap: 12px; }
-      .section-card,
-      .branch-card,
-      .events-card,
-      .franchise-card,
-      .menu-feature-copy { padding: 24px; }
+      .mini-grid,
+      .menu-grid{grid-template-columns:1fr}
+      .section-wrap,
+      .events-wrap,
+      .franchise-wrap,
+      .branch-card{padding:24px}
     }
   </style>
 </head>
 <body>
   <header>
     <div class="container header-inner">
-      <div class="logo-wrap"><span class="logo logo-default">marchello café<span class="mark">®</span></span></div>
-      <nav class="nav">
+      <div class="logo logo-default">
+        <span class="logo-word">marchello café<span class="logo-mark">®</span></span>
+      </div>
+
+      <nav class="desktop-nav">
         <a href="#about">about</a>
         <a href="#menu">menu</a>
         <a href="#branches">branches</a>
         <a href="#events">events</a>
         <a href="#franchise">franchise</a>
       </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+        <div>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="container">
+        <nav class="mobile-nav">
+          <a href="#about">about</a>
+          <a href="#menu">menu</a>
+          <a href="#branches">branches</a>
+          <a href="#events">events</a>
+          <a href="#franchise">franchise</a>
+        </nav>
+      </div>
     </div>
   </header>
 
   <section class="hero">
     <div class="container hero-grid">
-      <div class="hero-copy">
+      <div>
         <p class="eyebrow">warm • elegant • unhurried</p>
-        <h1 class="hero-title"><span class="logo-wrap"><span class="logo logo-hero">marchello café<span class="mark">®</span></span></span></h1>
-        <p class="lead">A warm, inviting café experience shaped by comfort, tasteful interiors, and a menu made for slow mornings, casual meetings, and meaningful gatherings.</p>
+        <h1 class="hero-logo-mobile-hide">
+          <span class="logo logo-hero">
+            <span class="logo-word">marchello café<span class="logo-mark">®</span></span>
+          </span>
+        </h1>
+        <p class="lead">
+          A warm, inviting café experience shaped by comfort, tasteful interiors, and a menu made for slow mornings, casual meetings, and meaningful gatherings.
+        </p>
         <div class="button-row">
           <a class="btn btn-dark" href="#branches">visit our branches</a>
           <a class="btn btn-outline" href="#events">inquire for events</a>
@@ -521,86 +567,95 @@
       </div>
 
       <div class="hero-cards">
-        <div class="hero-card-light">
-          <div class="inner">
-            <p class="kicker">coffee &amp; comfort</p>
+        <div class="panel panel-light">
+          <div class="panel-light-inner">
+            <p class="tag">coffee & comfort</p>
             <h3>crafted for everyday moments</h3>
-            <p>From signature coffee creations to satisfying meals and desserts, each visit is meant to feel warm, familiar, and refined.</p>
+            <p class="copy">From signature coffee creations to satisfying meals and desserts, each visit is meant to feel warm, familiar, and refined.</p>
           </div>
         </div>
-        <div class="hero-card-dark">
-          <p class="kicker">private gatherings</p>
+        <div class="panel panel-dark">
+          <p class="tag">private gatherings</p>
           <h3>an intimate events space</h3>
-          <p>Ideal for small celebrations, meetings, and memorable moments in a beautifully welcoming setting.</p>
+          <p class="copy">Ideal for small celebrations, meetings, and memorable moments in a beautifully welcoming setting.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="about">
+  <section id="about" class="page-section">
     <div class="container">
-      <div class="section-card about-grid">
+      <div class="section-wrap about-wrap">
         <div>
-          <p class="section-kicker">about marchello</p>
-          <h2 class="section-title">a space that feels warm, intimate, and welcoming</h2>
-          <p class="body-text"><span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span> is designed for people who appreciate a cozy atmosphere, comforting food, and coffee moments that feel personal. With carefully curated interiors and a calm, refined mood, each branch invites guests to stay, connect, and enjoy.</p>
+          <p class="section-tag">about marchello</p>
+          <h2>a space that feels warm, intimate, and welcoming</h2>
+          <p class="text">
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            is designed for people who appreciate a cozy atmosphere, comforting food, and coffee moments that feel personal. With carefully curated interiors and a calm, refined mood, each branch invites guests to stay, connect, and enjoy.
+          </p>
         </div>
         <div class="stats-grid">
-          <div class="stat-box" style="background:#efe4d7;"><strong>2</strong><span>branches</span></div>
-          <div class="stat-box" style="background:#e3d3c2;"><strong>premium</strong><span>brand feel</span></div>
-          <div class="stat-box" style="background:#dcc4af;"><strong>coffee</strong><span>meals &amp; desserts</span></div>
-          <div class="stat-box" style="background:#f2ebe3;"><strong>events</strong><span>small gatherings</span></div>
+          <div class="stat" style="background:#efe4d7;"><strong>2</strong><span>branches</span></div>
+          <div class="stat" style="background:#e3d3c2;"><strong>premium</strong><span>brand feel</span></div>
+          <div class="stat" style="background:#dcc4af;"><strong>coffee</strong><span>meals & desserts</span></div>
+          <div class="stat" style="background:#f2ebe3;"><strong>events</strong><span>small gatherings</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="menu">
+  <section id="menu" class="page-section">
     <div class="container">
-      <div class="menu-head">
+      <div class="menu-top">
         <div>
-          <p class="section-kicker">menu highlights</p>
-          <h2 class="section-title">comfort, variety, and café favorites</h2>
+          <p class="section-tag">menu highlights</p>
+          <h2>comfort, variety, and café favorites</h2>
         </div>
-        <p class="intro">Thoughtfully prepared drinks and dishes for mornings, merienda, meetings, and casual dining.</p>
+        <p class="text">Thoughtfully prepared drinks and dishes for mornings, merienda, meetings, and casual dining.</p>
       </div>
 
       <div class="menu-feature">
-        <div class="menu-feature-image">
+        <div class="menu-image">
           <img src="OLG00116.jpg" alt="Marchello Cafe featured drink" />
         </div>
-        <div class="menu-feature-copy">
-          <p class="section-kicker">featured drink</p>
-          <h3>crafted coffee with a bold visual feel</h3>
-          <p>A rich, inviting drink presentation that adds warmth, color, and a premium café mood to the Marchello experience.</p>
+        <div class="menu-copy">
+          <p class="section-tag">featured drink</p>
+          <h2>crafted coffee with a bold visual feel</h2>
+          <p class="text">A rich, inviting drink presentation that adds warmth, color, and a premium café mood to the Marchello experience.</p>
         </div>
       </div>
 
       <div class="menu-grid">
-        <div class="menu-box"><h3>Ice Crafted Coffees</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
-        <div class="menu-box"><h3>Coffee-Based Frappes</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
-        <div class="menu-box"><h3>Fruit Teas</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
-        <div class="menu-box"><h3>All-Day Breakfast</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
-        <div class="menu-box"><h3>Pastas</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
-        <div class="menu-box"><h3>Waffles &amp; Pastries</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>Ice Crafted Coffees</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>Coffee-Based Frappes</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>Fruit Teas</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>All-Day Breakfast</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>Pastas</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
+        <div class="menu-card"><h3>Waffles & Pastries</h3><p>A signature part of the Marchello experience, served with warmth and care.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="branches" class="branches-wrap">
+  <section id="branches" class="branches-band">
     <div class="container">
-      <p class="section-kicker">our branches</p>
-      <h2 class="section-title">find your nearest marchello café</h2>
+      <p class="section-tag">our branches</p>
+      <h2>find your nearest <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span></h2>
       <div class="branch-grid">
         <div class="branch-card">
           <h3>Cainta Branch</h3>
-          <div class="branch-meta"><span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span><span>— Cainta, Rizal</span></div>
+          <div class="branch-line">
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            <span>— Cainta, Rizal</span>
+          </div>
           <p class="branch-note">A warm neighborhood space for coffee, meals, and slow afternoons.</p>
           <a class="btn btn-outline" href="#">get in touch</a>
         </div>
         <div class="branch-card">
           <h3>Malabon Branch</h3>
-          <div class="branch-meta"><span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span><span>— Malabon</span></div>
+          <div class="branch-line">
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            <span>— Malabon</span>
+          </div>
           <p class="branch-note">The same Marchello experience in a welcoming and elegant setting.</p>
           <a class="btn btn-outline" href="#">get in touch</a>
         </div>
@@ -608,39 +663,63 @@
     </div>
   </section>
 
-  <section id="events">
+  <section id="events" class="page-section">
     <div class="container">
-      <div class="events-card">
+      <div class="events-wrap">
         <div>
-          <p class="section-kicker" style="color:#d7b9a1;">private events</p>
-          <h2 class="section-title">for celebrations, meetings, and meaningful gatherings</h2>
-          <p class="body-text"><span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span> has a dedicated private room where we can cater intimate events in a warm and elegant setting. Whether it is a birthday, a meeting, or a special gathering, the space is designed to feel comfortable, welcoming, and refined.</p>
-          <div class="button-row"><a class="btn" href="#" style="background:#fff;color:#2a211b;">reserve or inquire</a></div>
+          <p class="section-tag" style="color:#d7b9a1;">private events</p>
+          <h2>for celebrations, meetings, and meaningful gatherings</h2>
+          <p class="text">
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            has a dedicated private room where we can cater intimate events in a warm and elegant setting. Whether it is a birthday, a meeting, or a special gathering, the space is designed to feel comfortable, welcoming, and refined.
+          </p>
+          <div class="button-row" style="margin-top:28px;">
+            <a class="btn" href="#" style="background:#fff;color:var(--ink);">reserve or inquire</a>
+          </div>
         </div>
         <div class="events-side">
-          <div class="group"><p class="label">best for</p><p class="value">small celebrations, meetings, and intimate occasions</p></div>
-          <div class="group"><p class="label">atmosphere</p><p class="value">warm, classy, and welcoming</p></div>
-          <div class="group"><p class="label">inquiries</p><p class="value">message us for availability and details</p></div>
+          <div class="item">
+            <p class="label">best for</p>
+            <p class="value">small celebrations, meetings, and intimate occasions</p>
+          </div>
+          <div class="item">
+            <p class="label">atmosphere</p>
+            <p class="value">warm, classy, and welcoming</p>
+          </div>
+          <div class="item">
+            <p class="label">inquiries</p>
+            <p class="value">message us for availability and details</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="franchise" class="franchise-wrap">
+  <section id="franchise" class="franchise-band">
     <div class="container">
-      <div class="franchise-card">
+      <div class="franchise-wrap">
         <div>
-          <p class="section-kicker">franchise with us</p>
-          <h2 class="section-title">bring marchello café to your community</h2>
-          <p class="body-text"><span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span> is built around warmth, comfort, and a refined neighborhood café experience. Our franchise concept is designed for entrepreneurs who want to grow with a brand that values inviting spaces, quality offerings, and meaningful customer connection.</p>
-          <p class="body-text" style="margin-top:16px;">If you are interested in becoming part of the <span class="logo-wrap"><span class="logo logo-inline">marchello café<span class="mark">®</span></span></span> story, we welcome franchise inquiries and conversations about future locations.</p>
-          <div class="button-row"><a class="btn btn-dark" href="#">start franchise inquiry</a></div>
+          <p class="section-tag">franchise with us</p>
+          <h2>bring marchello café to your community</h2>
+          <p class="text">
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            is built around warmth, comfort, and a refined neighborhood café experience. Our franchise concept is designed for entrepreneurs who want to grow with a brand that values inviting spaces, quality offerings, and meaningful customer connection.
+          </p>
+          <p class="text">
+            If you are interested in becoming part of the
+            <span class="logo logo-inline"><span class="logo-word">marchello café<span class="logo-mark">®</span></span></span>
+            story, we welcome franchise inquiries and conversations about future locations.
+          </p>
+          <div class="button-row" style="margin-top:28px;">
+            <a class="btn btn-dark" href="#">start franchise inquiry</a>
+          </div>
         </div>
+
         <div class="mini-grid">
-          <div class="mini-box" style="background:#f1e5d9;"><strong>brand feel</strong><p>warm, elegant, and neighborhood-centered</p></div>
-          <div class="mini-box" style="background:#e5d3c3;"><strong>concept</strong><p>coffee, meals, desserts, and memorable café moments</p></div>
-          <div class="mini-box" style="background:#dcc4af;"><strong>growth</strong><p>built for carefully chosen locations and steady expansion</p></div>
-          <div class="mini-box" style="background:#f5ede5;"><strong>inquiries</strong><p>let’s discuss opportunities and next steps</p></div>
+          <div class="mini-card" style="background:#f1e5d9;"><strong>brand feel</strong><p>warm, elegant, and neighborhood-centered</p></div>
+          <div class="mini-card" style="background:#e5d3c3;"><strong>concept</strong><p>coffee, meals, desserts, and memorable café moments</p></div>
+          <div class="mini-card" style="background:#dcc4af;"><strong>growth</strong><p>built for carefully chosen locations and steady expansion</p></div>
+          <div class="mini-card" style="background:#f5ede5;"><strong>inquiries</strong><p>let’s discuss opportunities and next steps</p></div>
         </div>
       </div>
     </div>
@@ -649,11 +728,34 @@
   <footer>
     <div class="container footer-inner">
       <div>
-        <div class="logo-wrap"><span class="logo logo-small">marchello café<span class="mark">®</span></span></div>
-        <p class="footer-copy">coffee, comfort, and meaningful moments</p>
+        <div class="logo logo-small">
+          <span class="logo-word">marchello café<span class="logo-mark">®</span></span>
+        </div>
+        <div class="footer-copy">coffee, comfort, and meaningful moments</div>
       </div>
       <div class="footer-right">Cainta • Malabon</div>
     </div>
   </footer>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.style.display === 'block';
+      mobileMenu.style.display = isOpen ? 'none' : 'block';
+      toggle.classList.toggle('open', !isOpen);
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 </body>
 </html>
