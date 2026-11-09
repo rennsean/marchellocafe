@@ -480,6 +480,12 @@
     }
     .footer-copy{margin-top:8px}
 
+    .footer-owner{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6}
+    .footer-contact{display:grid;gap:5px;text-align:right;font-size:14px;line-height:1.6}
+    .footer-contact a{color:var(--ink);text-decoration:none;text-underline-offset:4px}
+    .footer-contact a:hover{text-decoration:underline}
+    @media(max-width:600px){.footer-contact{text-align:left}}
+
     @media (max-width: 900px){
       .hero-grid,
       .about-wrap,
@@ -509,6 +515,88 @@
       .franchise-wrap,
       .branch-card{padding:24px}
     }
+
+    /* Franchise inquiry form */
+    body.franchise-form-open{overflow:hidden}
+    .franchise-form-dialog{
+      width:min(94vw,860px);
+      height:min(90vh,900px);
+      height:min(90dvh,900px);
+      max-width:none;
+      max-height:calc(100dvh - 24px);
+      margin:auto;
+      padding:0;
+      border:1px solid var(--border);
+      border-radius:24px;
+      background:var(--bg);
+      color:var(--ink);
+      box-shadow:0 24px 80px rgba(42,33,27,.3);
+      font-family:inherit;
+    }
+    .franchise-form-dialog::backdrop{
+      background:rgba(42,33,27,.62);
+      backdrop-filter:blur(4px);
+    }
+    .franchise-form-shell{height:100%;display:flex;flex-direction:column}
+    .franchise-form-header{
+      flex:none;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:22px 24px 18px;
+      border-bottom:1px solid var(--border);
+    }
+    .franchise-form-header h2{margin:0;font-size:clamp(23px,4vw,30px);line-height:1.2}
+    .franchise-form-header p{margin:7px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
+    .franchise-form-close{
+      flex:none;
+      width:40px;
+      height:40px;
+      padding:0;
+      border:1px solid var(--border);
+      border-radius:50%;
+      background:rgba(255,255,255,.75);
+      color:var(--ink);
+      font-family:inherit;
+      font-size:28px;
+      line-height:1;
+      cursor:pointer;
+    }
+    .franchise-form-close:hover{background:var(--soft)}
+    .franchise-form-close:focus-visible,.franchise-form-footer a:focus-visible{
+      outline:3px solid var(--accent);outline-offset:3px;
+    }
+    .franchise-form-content{position:relative;flex:1;min-height:0;background:white}
+    .franchise-form-content iframe{display:block;width:100%;height:100%;border:0}
+    .franchise-form-loading{
+      position:absolute;
+      top:8px;
+      left:50%;
+      transform:translateX(-50%);
+      margin:0;
+      padding:8px 14px;
+      border-radius:12px;
+      background:var(--bg);
+      color:var(--muted);
+      font-size:14px;
+      pointer-events:none;
+    }
+    .franchise-form-footer{
+      flex:none;
+      padding:12px 24px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .franchise-form-footer a{color:var(--ink);text-underline-offset:3px}
+    @media(max-width:600px){
+      .franchise-form-dialog{width:96vw;height:94vh;height:94dvh;border-radius:18px}
+      .franchise-form-header{padding:18px 16px 14px}
+      .franchise-form-footer{padding:11px 16px}
+    }
+
   </style>
 </head>
 <body>
@@ -674,7 +762,7 @@
             has a dedicated private room where we can cater intimate events in a warm and elegant setting. Whether it is a birthday, a meeting, or a special gathering, the space is designed to feel comfortable, welcoming, and refined.
           </p>
           <div class="button-row" style="margin-top:28px;">
-            <a class="btn" href="#" style="background:#fff;color:var(--ink);">reserve or inquire</a>
+            <a id="openEventForm" aria-haspopup="dialog" aria-controls="franchiseInquiryDialog" class="btn" href="https://script.google.com/macros/s/AKfycby7cXE5YphoWwd4JJjp5UvehcE-Hxzsp_tFKpipa1sX545uE97HgQVFtRHQnARLRyA-/exec?type=events" style="background:#fff;color:var(--ink);">reserve or inquire</a>
           </div>
         </div>
         <div class="events-side">
@@ -711,7 +799,7 @@
             story, we welcome franchise inquiries and conversations about future locations.
           </p>
           <div class="button-row" style="margin-top:28px;">
-            <a class="btn btn-dark" href="#">start franchise inquiry</a>
+            <a id="openFranchiseForm" class="btn btn-dark" href="https://script.google.com/macros/s/AKfycby7cXE5YphoWwd4JJjp5UvehcE-Hxzsp_tFKpipa1sX545uE97HgQVFtRHQnARLRyA-/exec?type=franchise" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog" aria-controls="franchiseInquiryDialog">start franchise inquiry</a>
           </div>
         </div>
 
@@ -732,10 +820,35 @@
           <span class="logo-word">marchello café<span class="logo-mark">®</span></span>
         </div>
         <div class="footer-copy">coffee, comfort, and meaningful moments</div>
+        <div class="footer-owner">Owned and operated by <strong>RE3 Food Corporation</strong></div>
       </div>
-      <div class="footer-right">Cainta • Malabon</div>
+      <div class="footer-contact">
+        <a href="mailto:sales@marchellocafe.com">sales@marchellocafe.com</a>
+        <a href="mailto:franchise@marchellocafe.com">franchise@marchellocafe.com</a>
+        <div class="footer-right">Cainta • Malabon</div>
+      </div>
     </div>
   </footer>
+
+
+  <dialog id="franchiseInquiryDialog" class="franchise-form-dialog" aria-labelledby="franchiseFormTitle" aria-describedby="franchiseFormDescription">
+    <div class="franchise-form-shell">
+      <div class="franchise-form-header">
+        <div>
+          <h2 id="franchiseFormTitle">franchise inquiry</h2>
+          <p id="franchiseFormDescription">Take the first step toward opening your own marchello café.</p>
+        </div>
+        <button id="closeFranchiseForm" class="franchise-form-close" type="button" aria-label="Close franchise inquiry" autofocus>×</button>
+      </div>
+      <div class="franchise-form-content">
+        <p id="franchiseFormLoading" class="franchise-form-loading" role="status">Loading inquiry form…</p>
+        <iframe id="franchiseFormFrame" title="Marchello Café inquiry form" data-src="https://script.google.com/macros/s/AKfycby7cXE5YphoWwd4JJjp5UvehcE-Hxzsp_tFKpipa1sX545uE97HgQVFtRHQnARLRyA-/exec?type=franchise" loading="lazy"></iframe>
+      </div>
+      <div class="franchise-form-footer">
+        Having trouble viewing the form? <a id="openInquirySeparate" href="https://script.google.com/macros/s/AKfycby7cXE5YphoWwd4JJjp5UvehcE-Hxzsp_tFKpipa1sX545uE97HgQVFtRHQnARLRyA-/exec?type=franchise" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.
+      </div>
+    </div>
+  </dialog>
 
   <script>
     const toggle = document.getElementById('menuToggle');
@@ -756,6 +869,54 @@
         toggle.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Published Apps Script endpoint for franchise and event email inquiries.
+    const INQUIRY_APP_URL = 'https://script.google.com/macros/s/AKfycby7cXE5YphoWwd4JJjp5UvehcE-Hxzsp_tFKpipa1sX545uE97HgQVFtRHQnARLRyA-/exec';
+    const inquiryDialog = document.getElementById('franchiseInquiryDialog');
+    const inquiryFrame = document.getElementById('franchiseFormFrame');
+    const inquiryLoading = document.getElementById('franchiseFormLoading');
+    const inquiryClose = document.getElementById('closeFranchiseForm');
+    let lastInquiryTrigger = null;
+    let loadedInquiryType = null;
+    const inquiryOptions = {
+      franchise: {id:'openFranchiseForm',title:'franchise inquiry',description:'Take the first step toward opening your own marchello café.'},
+      events: {id:'openEventForm',title:'event inquiry',description:'Plan a gathering at marchello café. Tell us what you have in mind.'}
+    };
+    Object.entries(inquiryOptions).forEach(([type,options]) => {
+      const trigger = document.getElementById(options.id);
+      const formURL = new URL(INQUIRY_APP_URL,window.location.href);
+      formURL.searchParams.set('type',type);
+      trigger.href = formURL.href;
+      trigger.addEventListener('click',event => {
+        if(typeof inquiryDialog.showModal !== 'function')return;
+        event.preventDefault();
+        lastInquiryTrigger = trigger;
+        document.getElementById('franchiseFormTitle').textContent = options.title;
+        document.getElementById('franchiseFormDescription').textContent = options.description;
+        inquiryClose.setAttribute('aria-label','Close '+options.title);
+        document.getElementById('openInquirySeparate').href = formURL.href;
+        if(!inquiryDialog.open)inquiryDialog.showModal();
+        document.body.classList.add('franchise-form-open');
+        if(loadedInquiryType !== type){
+          inquiryLoading.hidden = false;
+          inquiryLoading.textContent = 'Loading inquiry form…';
+          inquiryFrame.title = 'Marchello Café '+options.title+' form';
+          inquiryFrame.src = formURL.href;
+          loadedInquiryType = type;
+        }
+      });
+    });
+    inquiryClose.addEventListener('click',()=>inquiryDialog.close());
+    inquiryDialog.addEventListener('close',()=>{
+      document.body.classList.remove('franchise-form-open');
+      if(lastInquiryTrigger)lastInquiryTrigger.focus({preventScroll:true});
+    });
+    inquiryDialog.addEventListener('click',event=>{
+      if(event.target!==inquiryDialog)return;
+      const bounds=inquiryDialog.getBoundingClientRect();
+      if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)inquiryDialog.close();
+    });
+    inquiryFrame.addEventListener('load',()=>{inquiryLoading.hidden=true;});
   </script>
 </body>
 </html>
